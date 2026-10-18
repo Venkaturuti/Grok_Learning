@@ -83,7 +83,7 @@
       </ResultCollector>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread_loopcount" enabled="false">
-        <intProp name="ThreadGroup.num_threads">${__P(users,2)}</intProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(users,2)}</stringProp>
         <intProp name="ThreadGroup.ramp_time">60</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
