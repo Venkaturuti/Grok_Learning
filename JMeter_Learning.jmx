@@ -243,7 +243,7 @@
         </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group -Timers">
-        <intProp name="ThreadGroup.num_threads">2</intProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(users,2)}</stringProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
