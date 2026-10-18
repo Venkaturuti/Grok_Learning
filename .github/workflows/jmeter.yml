@@ -2,9 +2,12 @@ name: JMeter test
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
+  schedule:
+    - cron: '30 20 * * *'
   workflow_dispatch:
     inputs:
+      # keep your existing inputs here, unchanged
       max_avg_ms:
         description: 'Max average response time (ms)'
         default: '500'
