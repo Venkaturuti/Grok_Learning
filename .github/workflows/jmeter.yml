@@ -33,7 +33,7 @@ jobs:
     
       - name: Check thresholds
         run: |
-          MAX_AVG_MS=500
+          MAX_AVG_MS=200
           MAX_ERROR_PCT=1
           awk -F',' -v maxavg=$MAX_AVG_MS -v maxerr=$MAX_ERROR_PCT '
             NR>1 { n++; total+=$2; if ($8!="true") err++ }
