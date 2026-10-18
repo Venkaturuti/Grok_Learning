@@ -307,12 +307,12 @@
         </PreciseThroughputTimer>
         <hashTree/>
         <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-          <stringProp name="ConstantTimer.delay">10000</stringProp>
+          <stringProp name="ConstantTimer.delay">1000</stringProp>
         </ConstantTimer>
         <hashTree/>
       </hashTree>
       <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="Gaussian Random Timer">
-        <stringProp name="ConstantTimer.delay">3000</stringProp>
+        <stringProp name="ConstantTimer.delay">1000</stringProp>
         <stringProp name="RandomTimer.range">1000</stringProp>
       </GaussianRandomTimer>
       <hashTree/>
