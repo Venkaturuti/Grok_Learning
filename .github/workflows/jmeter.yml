@@ -4,10 +4,21 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      max_avg_ms:
+        description: 'Max average response time (ms)'
+        default: '500'
+      max_error_pct:
+        description: 'Max error rate (%)'
+        default: '1'
+      users:
+        description: 'Number of users'
+        default: '2'
 
 jobs:
   load-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -29,12 +40,12 @@ jobs:
       - name: Run test
         run: |
           ./apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx \
-            -l results/results.jtl -e -o report
-    
+            -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }}
+
       - name: Check thresholds
         run: |
-          MAX_AVG_MS=500
-          MAX_ERROR_PCT=1
+          MAX_AVG_MS=${{ inputs.max_avg_ms || '500' }}
+          MAX_ERROR_PCT=${{ inputs.max_error_pct || '1' }}
           awk -F',' -v maxavg=$MAX_AVG_MS -v maxerr=$MAX_ERROR_PCT '
             NR>1 { n++; total+=$2; if ($8!="true") err++ }
             END {
@@ -44,7 +55,7 @@ jobs:
               if (errpct>maxerr){ print "FAIL: error rate " errpct "% is above " maxerr "%"; exit 1 }
               print "PASS: within thresholds"
             }' results/results.jtl
-            
+
       - name: Save HTML report
         if: always()
         uses: actions/upload-artifact@v4
