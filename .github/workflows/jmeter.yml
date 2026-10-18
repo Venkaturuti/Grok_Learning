@@ -30,7 +30,21 @@ jobs:
         run: |
           ./apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx \
             -l results/results.jtl -e -o report
-
+    
+      - name: Check thresholds
+        run: |
+          MAX_AVG_MS=500
+          MAX_ERROR_PCT=1
+          awk -F',' -v maxavg=$MAX_AVG_MS -v maxerr=$MAX_ERROR_PCT '
+            NR>1 { n++; total+=$2; if ($8!="true") err++ }
+            END {
+              avg=total/n; errpct=err*100/n
+              printf "Samples: %d  Avg: %.0f ms  Errors: %.2f%%\n", n, avg, errpct
+              if (avg>maxavg)   { print "FAIL: average " avg " ms is above " maxavg " ms"; exit 1 }
+              if (errpct>maxerr){ print "FAIL: error rate " errpct "% is above " maxerr "%"; exit 1 }
+              print "PASS: within thresholds"
+            }' results/results.jtl
+            
       - name: Save HTML report
         if: always()
         uses: actions/upload-artifact@v4
