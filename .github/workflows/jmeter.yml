@@ -44,8 +44,7 @@ jobs:
 
       - name: Run test
         run: |
-          ./apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx \
-            -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }}
+          jmeter -n -t JMeter_Learning.jmx -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }} -Jrampup=${{ inputs.rampup || '1' }}
 
       - name: Check thresholds
         run: |
