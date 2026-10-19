@@ -9,7 +9,6 @@ on:
     - cron: '30 20 * * *'
   workflow_dispatch:
     inputs:
-      # keep your existing inputs here, unchanged
       max_avg_ms:
         description: 'Max average response time (ms)'
         default: '500'
@@ -19,6 +18,9 @@ on:
       users:
         description: 'Number of users'
         default: '2'
+      rampup:
+        description: 'Ramp-up time (seconds)'
+        default: '1'
 
 jobs:
   load-test:
@@ -44,8 +46,7 @@ jobs:
 
       - name: Run test
         run: |
-          ./apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx \
-            -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }}
+          apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }} -Jrampup=${{ inputs.rampup || '1' }}
 
       - name: Check thresholds
         run: |
