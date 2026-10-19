@@ -19,6 +19,9 @@ on:
       users:
         description: 'Number of users'
         default: '2'
+              rampup:
+        description: 'Ramp-up time (seconds)'
+        default: '1'
 
 jobs:
   load-test:
