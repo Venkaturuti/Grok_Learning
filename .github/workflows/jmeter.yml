@@ -62,6 +62,21 @@ jobs:
               print "PASS: within thresholds"
             }' results/results.jtl
 
+      - name: Results summary
+        if: always()
+        run: |
+          F=results/results.jtl
+          N=$(tail -n +2 $F | wc -l)
+          AVG=$(awk -F',' 'NR>1{t+=$2}END{printf "%.0f", t/(NR-1)}' $F)
+          MAX=$(awk -F',' 'NR>1{if($2>m)m=$2}END{print m}' $F)
+          P90=$(tail -n +2 $F | cut -d',' -f2 | sort -n | awk '{a[NR]=$1}END{i=int(NR*0.9); if(i<1)i=1; print a[i]}')
+          ERR=$(awk -F',' 'NR>1 && $8!="true"{e++}END{printf "%.2f", e*100/(NR-1)}' $F)
+          echo "## JMeter results" >> $GITHUB_STEP_SUMMARY
+          echo "| Samples | Avg (ms) | 90th pct (ms) | Max (ms) | Errors |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|---|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| $N | $AVG | $P90 | $MAX | $ERR% |" >> $GITHUB_STEP_SUMMARY
+          echo "Users: ${{ inputs.users || '2' }}, Ramp-up: ${{ inputs.rampup || '1' }}s, Limit: ${{ inputs.max_avg_ms || '500' }} ms" >> $GITHUB_STEP_SUMMARY
+          
       - name: Save HTML report
         if: always()
         uses: actions/upload-artifact@v4
