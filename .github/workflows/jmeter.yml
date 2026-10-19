@@ -49,7 +49,7 @@ jobs:
 
       - name: Check thresholds
         run: |
-          MAX_AVG_MS=${{ inputs.max_avg_ms || '500' }}
+          MAX_AVG_MS=${{ inputs.max_avg_ms || '100' }}
           MAX_ERROR_PCT=${{ inputs.max_error_pct || '1' }}
           awk -F',' -v maxavg=$MAX_AVG_MS -v maxerr=$MAX_ERROR_PCT '
             NR>1 { n++; total+=$2; if ($8!="true") err++ }
