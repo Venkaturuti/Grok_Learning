@@ -27,9 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '17'
@@ -45,11 +45,15 @@ jobs:
           ./bin/PluginsManagerCMD.sh install jpgc-dummy
 
       - name: Run test
+
+     main
         env:
           APP_URL: ${{ secrets.APP_URL }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
-          ./apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }} -Jrampup=${{ inputs.rampup || '1' }}
+          ./apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }} -Jrampup=${{ inputs.rampup || '1' }} -Jhost="$APP_URL" -Jpassword="$APP_PASSWORD"
+          
+          
 
       - name: Check thresholds
         run: |
@@ -82,7 +86,7 @@ jobs:
           
       - name: Save HTML report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jmeter-report
           path: report
