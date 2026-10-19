@@ -34,7 +34,7 @@ jobs:
 
       - name: Install JMeter and plugins
         run: |
-          wget -q https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
+          wget -q https://dlcdn.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
           tar -xzf apache-jmeter-5.6.3.tgz
           cd apache-jmeter-5.6.3
           wget -q -O lib/ext/jmeter-plugins-manager.jar https://jmeter-plugins.org/get/
