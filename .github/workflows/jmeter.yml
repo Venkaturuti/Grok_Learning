@@ -45,6 +45,9 @@ jobs:
           ./bin/PluginsManagerCMD.sh install jpgc-dummy
 
       - name: Run test
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         run: |
           ./apache-jmeter-5.6.3/bin/jmeter -n -t JMeter_Learning.jmx -l results/results.jtl -e -o report -Jusers=${{ inputs.users || '2' }} -Jrampup=${{ inputs.rampup || '1' }}
 
